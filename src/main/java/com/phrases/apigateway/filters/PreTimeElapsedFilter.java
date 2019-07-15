@@ -4,14 +4,16 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Implement a Pre Filter for Zuul
  */
-public class PreFilter extends ZuulFilter {
-    private static Logger log = LoggerFactory.getLogger(PreFilter.class);
+@Component
+public class PreTimeElapsedFilter extends ZuulFilter {
+    private static Logger log = LoggerFactory.getLogger(PreTimeElapsedFilter.class);
 
     @Override
     public String filterType() {
@@ -28,12 +30,17 @@ public class PreFilter extends ZuulFilter {
         return true;
     }
 
+    // Calcula el tiempo de inicio del request
     @Override
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
 
-        log.info(String.format("%s request to %s", request.getMethod(), request.getRequestURL().toString()));
+        log.info(String.format("%s request enrutado a %s", request.getMethod(), request.getRequestURL().toString()));
+
+        Long tiempoInicio = System.currentTimeMillis();
+        request.setAttribute("tiempoInicio", tiempoInicio);
+
         return null;
     }
 }
