@@ -1,7 +1,7 @@
 spring:  
   application:
-    name: api-gateway # Este mismo nombre debe tener el yml que está en git
+    name: zuul-server # Este mismo nombre debe tener el yml que está en git
   cloud:
     config:
       failFast: false
-      uri: http://localhost:1111
+      uri: http://config-server:1111
