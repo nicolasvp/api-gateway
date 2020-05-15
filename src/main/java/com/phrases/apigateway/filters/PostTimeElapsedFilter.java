@@ -29,7 +29,7 @@ public class PostTimeElapsedFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
 
-        log.info("Entrando a post filter");
+        log.info("Entrando a post filter: " + request.getRequestURI().toString());
 
         Long tiempoInicio = (Long) request.getAttribute("tiempoInicio");
         Long tiempoFinal = System.currentTimeMillis();
