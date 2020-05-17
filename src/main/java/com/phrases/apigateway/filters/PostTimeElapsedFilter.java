@@ -3,8 +3,7 @@ package com.phrases.apigateway.filters;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Implement a Post Filter for Zuul
  */
+@Slf4j
 @Component
 public class PostTimeElapsedFilter extends ZuulFilter {
-
-    private static Logger log = LoggerFactory.getLogger(PostTimeElapsedFilter.class);
 
     @Override
     public boolean shouldFilter() {
@@ -29,14 +27,14 @@ public class PostTimeElapsedFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
 
-        log.info("Entrando a post filter");
+        log.info("Entering to post filter");
 
-        Long tiempoInicio = (Long) request.getAttribute("tiempoInicio");
-        Long tiempoFinal = System.currentTimeMillis();
-        Long tiempoTranscurrido = tiempoFinal - tiempoInicio;
+        Long initTime = (Long) request.getAttribute("initTime");
+        Long finalTime = System.currentTimeMillis();
+        Long timeElapsed = finalTime - initTime;
 
-        log.info(String.format("Tiempo transcurrido en segundos %s seg.", tiempoTranscurrido.doubleValue() / 1000.00));
-        log.info(String.format("Tiempo transcurrido en mileseg %s ms.", tiempoTranscurrido));
+        log.info(String.format("Time elapsed in seconds %s.", timeElapsed.doubleValue() / 1000.00));
+        log.info(String.format("Time elapsed in milliseconds %s ms.", timeElapsed));
         return null;
     }
 
